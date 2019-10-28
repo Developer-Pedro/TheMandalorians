@@ -21,6 +21,7 @@ public class PageManager : MonoSingleton<PageManager>
 	protected override void DerivedAwake() {
 		LoadPrefab("Login Page");
 		LoadPrefab("Groups Page");
+        LoadPrefab("CreateGroup Page");
 		LoadPrefab("Members Page");
 
 	}
@@ -80,8 +81,18 @@ public class PageManager : MonoSingleton<PageManager>
 		SwitchTo(pageStack.Peek());
 	}
 
+	public void Pop()
+	{
+		pageStack.Pop();
+	}
+
 	public void Start(string pageName) {
 		pageStack.Clear();
 		Next(pageName);
 	}
+
+    public void CreateGroup()
+    {
+        Next("CreateGroup Page");
+    }
 }

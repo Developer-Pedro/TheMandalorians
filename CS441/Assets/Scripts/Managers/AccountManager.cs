@@ -27,4 +27,9 @@ public class AccountManager : MonoSingleton<AccountManager>
 
 		return true;
 	}
+
+    public void addGroupName(string groupName)
+    {
+        Account.addNewGroup(groupName);
+    }
 }

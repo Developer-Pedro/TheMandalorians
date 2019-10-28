@@ -20,4 +20,9 @@ public class Account
 		Groups.Add(new Group("Fraternity"));
 	}
 
+    public void addNewGroup(string groupName)
+    {
+        Groups.Add(new Group(groupName));
+    }
+
 }
