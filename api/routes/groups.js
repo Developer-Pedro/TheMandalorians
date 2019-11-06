@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const Group = require("../models/groups");
 const Identification = require("../models/ID");
 
+
+//Find a specific Group
 router.get("/", (req, res, next) => {
     Group.find()
       .select("ID quantity _id")
@@ -33,6 +35,7 @@ router.get("/", (req, res, next) => {
       });
   });
 
+  //Grab IDs to Construct a group
   router.post("/", (req, res, next) => {
     Identification.findById(req.body.productId)
       .then(ID => {
@@ -71,7 +74,7 @@ router.get("/", (req, res, next) => {
       });
   });
 
-
+//Get a specific ID from a group
   router.get("/:orderId", (req, res, next) => {
     Order.findById(req.params.orderId)
       .populate('ID')
@@ -96,7 +99,8 @@ router.get("/", (req, res, next) => {
         });
       });
   });
-/* PEDRO MAKE A GROUP HERE
+
+  /* PEDRO MAKE A GROUP HERE
   router.post("/:CreateGroup", (req, res, next)=> {
     Boolean good = GroupController.Add(req.body.name)
     //Rewrite fir creating a group
@@ -106,6 +110,7 @@ router.get("/", (req, res, next) => {
   })
 */
 
+//Delete a Group
 router.delete("/:groupID", (req, res, next) => {
   Group.remove({ _id: req.params.groupID })
     .exec()
