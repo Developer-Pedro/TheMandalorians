@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 
-const IDM_Schema = mongoose.Schema({
-    _IDM: mongoose.Schema.Types.ObjectId,
-    fname:String,
-    lname:String
+
+//Defining the layout of the actual product 
+const IDSchema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    fname: { type: String, required: true },
+    lname: { type: String, required: true }
+    //productImage: { type: String, required: true }
 });
 
-module.exports = mongoose.model('IDM',IDM_Schema);
+module.exports = mongoose.model('Identification',IDSchema);

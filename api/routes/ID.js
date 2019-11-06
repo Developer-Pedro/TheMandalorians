@@ -3,7 +3,10 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
 
-
+const Identification = require('../models/ID');
+/*this portion is connected to our models folder  in the product file 
+it is used to give the layout of an actual "product" object  in the data base */
+//####################################################################################
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -31,11 +34,9 @@ const storage = multer.diskStorage({
     fileFilter: fileFilter
   });
 
-  const IDM = require('../models/ID');
-
 //GET
 router.get("/", (req, res, next) => {
-    IDM.find()
+    Identification.find()
       .select("name  _id IDImage")
       .exec()
       .then(docs => {
@@ -43,8 +44,8 @@ router.get("/", (req, res, next) => {
           count: docs.length,
           ids: docs.map(doc => {
             return {
-              fname: doc.name1,
-              lname: doc.name2,
+              fname: doc.fname,
+              lname: doc.lname,
               IDImage: doc.IDImage,
               _id: doc._id,
               request: {
@@ -56,6 +57,7 @@ router.get("/", (req, res, next) => {
         };
         res.status(200).json(response);
       })
+      //ERROR CATCHER
       .catch(err => {
         console.log(err);
         res.status(500).json({
@@ -67,13 +69,17 @@ router.get("/", (req, res, next) => {
 
 //POST
 /*for a post request from this data fname and lname are expected*/
+
 router.post("/", upload.single('IDImage'), (req, res, next) => {
-    const id = new IDM({
-      _id: new mongoose.Types.ObjectId(),
-      fname: req.body.name1,
-      lname: req.body.name2,
-      IDImage: req.file.path 
+  //console.log("go0");  
+  const id = new Identification({
+      _id: new mongoose.Types.ObjectId(),//new instance of that modle "Identification"
+      fname: req.body.fname,
+      lname: req.body.lname,
+      //IDImage: req.file.path 
     });
+    //res.json({ message: "can you see me ?" });
+    //console.log("go1");
     id
       .save()
       .then(result => {
@@ -98,10 +104,14 @@ router.post("/", upload.single('IDImage'), (req, res, next) => {
         });
       });
   });
+  
+//router.post("/", (req,res,next)=>{}
 
+//Get
+// the collon inside the function extracts something specific about the the product in this case the product 
   router.get("/:ID", (req, res, next) => {
     const id = req.params.ID;
-    ID.findById(id)
+    Identification.findById(id)
       .select('name _id IDImage')
       .exec()
       .then(doc => {
@@ -125,15 +135,16 @@ router.post("/", upload.single('IDImage'), (req, res, next) => {
         res.status(500).json({ error: err });
       });
   });
-  
 
+//PATCH
+//router to send path request that alter specific things in the object
   router.patch("/:ID", (req, res, next) => {
-    const ID = req.params.ID;
+    const id = req.params.ID;
     const updateOps = {};
     for (const ops of req.body) {
       updateOps[ops.propName] = ops.value;
     }
-   IDM.update({ _id: id }, { $set: updateOps })
+   Identification.update({ _id: id }, { $set: updateOps })
       .exec()
       .then(result => {
         res.status(200).json({
@@ -152,9 +163,9 @@ router.post("/", upload.single('IDImage'), (req, res, next) => {
       });
   });
 
-  router.delete("/:Id", (req, res, next) => {
-    const id = req.params.Id;
-    IDM.remove({ _id: id })
+  router.delete("/:ID", (req, res, next) => {
+    const id = req.params.ID;
+    Identification.remove({ _id: id })
       .exec()
       .then(result => {
         res.status(200).json({

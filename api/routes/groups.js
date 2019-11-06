@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
+const Group = require("../models/groups");
+const Identification = require("../models/ID");
+
 router.get("/", (req, res, next) => {
     Group.find()
       .select("ID quantity _id")
@@ -31,7 +34,7 @@ router.get("/", (req, res, next) => {
   });
 
   router.post("/", (req, res, next) => {
-    Product.findById(req.body.productId)
+    Identification.findById(req.body.productId)
       .then(ID => {
         if (!ID) {
           return res.status(404).json({
@@ -68,6 +71,7 @@ router.get("/", (req, res, next) => {
       });
   });
 
+
   router.get("/:orderId", (req, res, next) => {
     Order.findById(req.params.orderId)
       .populate('ID')
@@ -92,6 +96,15 @@ router.get("/", (req, res, next) => {
         });
       });
   });
+/* PEDRO MAKE A GROUP HERE
+  router.post("/:CreateGroup", (req, res, next)=> {
+    Boolean good = GroupController.Add(req.body.name)
+    //Rewrite fir creating a group
+    res.status(good ? 200 : 500);
+    res.send();
+  console.log("can you see me");
+  })
+*/
 
 router.delete("/:groupID", (req, res, next) => {
   Group.remove({ _id: req.params.groupID })

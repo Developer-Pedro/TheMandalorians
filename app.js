@@ -1,31 +1,41 @@
+//bring PACKAGES into effect
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');//data base authorixation
 
-
-const idRoutes = require('./api/routes/ID');
-const groupRoutes = require('./api/routes/groups');
-
-
-
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://guzma087:<tjtt$$9bmgmH>@box-1-yfkc7.azure.mongodb.net/test?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-  
-});
-mongoose.Promise = global.Promise;
-
-
-app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: false}));
+//implementation of certain packages 
+app.use(morgan("dev"));//logger middle-ware
+app.use('/uploads', express.static('uploads'));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+//establish Parser for each Route
+const idRoutes = require('./api/routes/ID');
+const groupRoutes = require('./api/routes/groups');
+const userRoutes = require('./api/routes/user');
+//Routes to handle requests to designated 
+app.use('/ID', idRoutes);
+app.use('/groups', groupRoutes);
+app.use("/user", userRoutes);
+
+//loging to the actual server
+mongoose.connect(
+    'mongodb+srv://guzma087:'
+    + process.env.MONGO_ATLAS_PW +
+    '@box-1-yfkc7.azure.mongodb.net/test?retryWrites=true&w=majority',
+{
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+}
+);
+mongoose.Promise = global.Promise;
+mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
+
+//Acces Controls
+//Ensure that we prevent CORS errors (security errors enforced by browsers)
 app.use((req, res,next) =>{
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers',
@@ -37,11 +47,6 @@ app.use((req, res,next) =>{
     }
     next();
 });
-
-
-//Routes to handle requests
-app.use('/ID', idRoutes);
-app.use('/groups', groupRoutes);
 
 //checkpoint error handles
 app.use((req, res, next) => {
