@@ -37,20 +37,21 @@ const storage = multer.diskStorage({
 //GET
 router.get("/", (req, res, next) => {
     Identification.find()
-      .select("name  _id IDImage")
+      .select("fname lname _id IDImage")
       .exec()
       .then(docs => {
         const response = {
           count: docs.length,
           ids: docs.map(doc => {
             return {
-              fname: doc.fname,
-              lname: doc.lname,
-              IDImage: doc.IDImage,
+              //IDImage: doc.IDImage,
               _id: doc._id,
+              lname: doc.lname,
+              fname: doc.fname,
               request: {
                 type: "GET",
-                url: "http://localhost:3000/ID/" + doc._id
+                url: "http://localhost:3000/ID/" + doc._id,
+                
               }
             };
           })
@@ -67,28 +68,27 @@ router.get("/", (req, res, next) => {
   });
   
 
-//POST
+//POST a new identification 
 /*for a post request from this data fname and lname are expected*/
-
 router.post("/", upload.single('IDImage'), (req, res, next) => {
-  //console.log("go0");  
+  //console.log("go0"); 
+  //Creating new instance of our Identification Model from the models folder 
   const id = new Identification({
-      _id: new mongoose.Types.ObjectId(),//new instance of that modle "Identification"
+      _id: new mongoose.Types.ObjectId(),//make new odject is for ths "Identification"
       fname: req.body.fname,
       lname: req.body.lname,
       //IDImage: req.file.path 
     });
     //res.json({ message: "can you see me ?" });
     //console.log("go1");
-    id
-      .save()
+    id.save()//store into mongodb data base
       .then(result => {
         console.log(result);
         res.status(201).json({
           message: "Created ID successfully",
           createdID: {
-              lname: result.name1,
-              fname: result.name2,
+              lname: result.lname,
+              fname: result.fname,
               _id: result._id,
               request: {
                   type: 'GET',
@@ -112,16 +112,16 @@ router.post("/", upload.single('IDImage'), (req, res, next) => {
   router.get("/:ID", (req, res, next) => {
     const id = req.params.ID;
     Identification.findById(id)
-      .select('name _id IDImage')
+      .select('fname lname _id IDImage')
       .exec()
       .then(doc => {
         console.log("From database", doc);
         if (doc) {
           res.status(200).json({
-              product: doc,
+              ID_Code: doc,
               request: {
                   type: 'GET',
-                  url: 'http://localhost:3000/ID'
+                  url: 'http://localhost:3000/ID'+ doc._id
               }
           });
         } else {
@@ -173,7 +173,7 @@ router.post("/", upload.single('IDImage'), (req, res, next) => {
             request: {
                 type: 'POST',
                 url: 'http://localhost:3000/ID',
-                body: { name: 'String', price: 'Number' }
+                body: { fname: req.body.fname, lname: req.body.lname}
             }
         });
       })

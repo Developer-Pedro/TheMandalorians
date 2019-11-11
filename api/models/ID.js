@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 //Defining the layout of the actual product 
 const IDSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    fname: { type: String, required: true },
+    fname: { type: String, required: true },//use to get name out onto the screen
     lname: { type: String, required: true }
     //productImage: { type: String, required: true }
 });
