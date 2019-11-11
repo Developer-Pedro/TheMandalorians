@@ -75,15 +75,15 @@ router.post("/", upload.single('IDImage'), (req, res, next) => {
   //Creating new instance of our Identification Model from the models folder 
   const id = new Identification({
       _id: new mongoose.Types.ObjectId(),//make new odject is for ths "Identification"
-      fname: req.body.fname,
-      lname: req.body.lname,
+      fname: req.body.fname,//first name 
+      lname: req.body.lname,//last name 
       //IDImage: req.file.path 
     });
-    //res.json({ message: "can you see me ?" });
+    //res.json({ message: "can you see me ?" });//CHECK POINT 
     //console.log("go1");
     id.save()//store into mongodb data base
-      .then(result => {
-        console.log(result);
+      .then(result => {//promise to get back something
+        console.log(result);//lock the console
         res.status(201).json({
           message: "Created ID successfully",
           createdID: {
@@ -97,7 +97,7 @@ router.post("/", upload.single('IDImage'), (req, res, next) => {
           }
         });
       })
-      .catch(err => {
+      .catch(err => { //error check point 
         console.log(err);
         res.status(500).json({
           error: err
@@ -109,8 +109,8 @@ router.post("/", upload.single('IDImage'), (req, res, next) => {
 
 //Get
 // the collon inside the function extracts something specific about the the product in this case the product 
-  router.get("/:ID", (req, res, next) => {
-    const id = req.params.ID;
+  router.get("/:The_ID", (req, res, next) => {
+    const id = req.params.The_ID;
     Identification.findById(id)
       .select('fname lname _id IDImage')
       .exec()
@@ -138,20 +138,23 @@ router.post("/", upload.single('IDImage'), (req, res, next) => {
 
 //PATCH
 //router to send path request that alter specific things in the object
-  router.patch("/:ID", (req, res, next) => {
-    const id = req.params.ID;
-    const updateOps = {};
+  router.patch("/:The_ID", (req, res, next) => {
+    const id = req.params.The_ID;
+    const updateOps = {};// allows us to send different types of patch requests 
     for (const ops of req.body) {
       updateOps[ops.propName] = ops.value;
     }
-   Identification.update({ _id: id }, { $set: updateOps })
+   Identification.update({ _id: id },
+     { $set: updateOps })
       .exec()
       .then(result => {
         res.status(200).json({
-            message: 'ID updated',
+            message: 'ID updated On Data Base ',
             request: {
                 type: 'GET',
-                url: 'http://localhost:3000/ID/' + id
+                url: 'http://localhost:3000/ID/' + id,
+                lname: result.lname,
+                fname: result.fname,
             }
         });
       })
@@ -163,13 +166,13 @@ router.post("/", upload.single('IDImage'), (req, res, next) => {
       });
   });
 
-  router.delete("/:ID", (req, res, next) => {
-    const id = req.params.ID;
-    Identification.remove({ _id: id })
+  router.delete("/:The_ID", (req, res, next) => {
+    const id = req.params.The_ID;
+    Identification.remove({ _id: id })//target ID to delete
       .exec()
       .then(result => {
         res.status(200).json({
-            message: 'ID deleted',
+            message: 'ID deleted',//notify removed
             request: {
                 type: 'POST',
                 url: 'http://localhost:3000/ID',

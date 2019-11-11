@@ -9,8 +9,8 @@ const Identification = require("../models/ID");
 //Find a specific Group
 router.get("/", (req, res, next) => {
     Group.find()
-      .select("ID quantity _id")
-      .populate('ID', 'fname')
+      .select("The_ID quantity _id")
+      .populate('The_ID', 'fname')
       .exec()
       .then(docs => {
         res.status(200).json({
@@ -22,7 +22,7 @@ router.get("/", (req, res, next) => {
               quantity: doc.quantity,
               request: {
                 type: "GET",
-                url: "http://localhost:3000/orders/" + doc._id
+                url: "http://localhost:3000/groups/" + doc._id
               }
             };
           })
@@ -34,30 +34,29 @@ router.get("/", (req, res, next) => {
         });
       });
   });
-
-  //Grab IDs to Construct a group
+  
   router.post("/", (req, res, next) => {
-    Identification.findById(req.body.productId)
-      .then(ID => {
-        if (!ID) {
+    Identification.findById(req.body.The_ID)
+      .then(id => {
+        if (!id) {
           return res.status(404).json({
-            message: "ID not found"
+            message: "Person not found"
           });
         }
-        const group = new Order({
+        const group = new Group({
           _id: mongoose.Types.ObjectId(),
           quantity: req.body.quantity,
-          ID: req.body.ID
+          product: req.body.The_ID
         });
-        return order.save();
+        return group.save();
       })
       .then(result => {
         console.log(result);
         res.status(201).json({
-          message: "Group stored",
+          message: "Order stored",
           createdGroup: {
             _id: result._id,
-            ID: result.ID,
+           person: result.person,
             quantity: result.quantity
           },
           request: {
@@ -74,6 +73,47 @@ router.get("/", (req, res, next) => {
       });
   });
 
+
+/*
+  //Grab IDs to Construct a group
+  router.post("/", (req, res, next) => {
+    Identification.findById(req.body.ID)
+      .then(ID_Code => {
+        if (!ID_Code) {
+          return res.status(404).json({
+            message: "person / ID not found"
+          });
+        }
+        const n_group = new Group({//Creating new instance of Group objects established in model file
+          _id: mongoose.Types.ObjectId(),//generate origina ID code for this Group
+          quantity: req.body.quantity,//amount of IDs(people in this group)
+          person: req.body.id//target ID(person) to come into group
+        });
+        return order.save();//(save this new groupd to the database)
+      })
+      .then(result => {
+        console.log(result);
+        res.status(201).json({
+          message: "Group created and Stored",
+          createdGroup: {
+            _id: result._id,
+            ID: result.ID,
+            quantity: result.quantity
+          },
+          request: {
+            type: "GET",
+            url: "http://localhost:3000/groups/" + result._id
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+  });
+*/
 //Get a specific ID from a group
   router.get("/:orderId", (req, res, next) => {
     Order.findById(req.params.orderId)
@@ -89,7 +129,7 @@ router.get("/", (req, res, next) => {
           group: group,
           request: {
             type: "GET",
-            url: "http://localhost:3000/orders"
+            url: "http://localhost:3000/groups"
           }
         });
       })
@@ -100,15 +140,6 @@ router.get("/", (req, res, next) => {
       });
   });
 
-  /* PEDRO MAKE A GROUP HERE
-  router.post("/:CreateGroup", (req, res, next)=> {
-    Boolean good = GroupController.Add(req.body.name)
-    //Rewrite fir creating a group
-    res.status(good ? 200 : 500);
-    res.send();
-  console.log("can you see me");
-  })
-*/
 
 //Delete a Group
 router.delete("/:groupID", (req, res, next) => {
@@ -119,7 +150,7 @@ router.delete("/:groupID", (req, res, next) => {
         message: "Group deleted",
         request: {
           type: "POST",
-          url: "http://localhost:3000/orders",
+          url: "http://localhost:3000/groups",
           body: { groupID: "ID", quantity: "Number" }
         }
       });
