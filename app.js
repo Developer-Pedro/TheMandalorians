@@ -8,6 +8,7 @@ const mongoose = require('mongoose');//data base authorixation
 //implementation of certain packages 
 // "use" sets up a middle ware
 app.use(morgan("dev"));//logger middle-ware
+//app.use('/uploads'express.static('uploads'))
 app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

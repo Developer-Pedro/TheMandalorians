@@ -7,7 +7,7 @@ const IDSchema = mongoose.Schema({
     fname: { type: String, required: true },//use to get name out onto the screen
     lname: { type: String, required: true },//use to gey last name 
     //email: { type: String, required: true },//used to get email
-    //productImage: { type: String, required: true } //used to aquire profile picture 
+    IDImage: { type: String, required: true } //used to aquire profile picture 
 });
 
 module.exports = mongoose.model('Identification',IDSchema);
