@@ -55,6 +55,6 @@ router.post("/", checkAuth, upload.single('IDImage'),IDController.construct_an_I
   router.patch("/:The_ID",IDController.edit_an_ID);
 
 //Delete ID .....but I think you knew that
-  router.delete("/:The_ID",IDController.delete_an_ID);
+  router.delete("/:The_ID", checkAuth,IDController.delete_an_ID);
 
 module.exports = router;

@@ -133,7 +133,7 @@ exports.edit_an_ID = checkAuth, (req, res, next) => {
       });
   };
 
-  exports.delete_an_ID = checkAuth, (req, res, next) => {
+  exports.delete_an_ID = (req, res, next) => {
     const id = req.params.The_ID;
     Identification.remove({ _id: id })//target ID to delete
       .exec()
