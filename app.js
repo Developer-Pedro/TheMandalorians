@@ -39,6 +39,7 @@ mongoose.set('useFindAndModify', false);
 //Acces Controls
 //Ensure that we prevent CORS errors (security errors enforced by browsers)
 app.use((req, res,next) =>{
+    
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers',
     'Origin,X-Requests-With, Content-Type, Accept, Authorization'
@@ -52,8 +53,8 @@ app.use((req, res,next) =>{
 
 //checkpoint error handles
 app.use((req, res, next) => {
-    const error = new Error('Not Found');
-    error .status(404);
+   const error = new Error('Not Found');
+    error.status(404);
     next(error);
     
 });

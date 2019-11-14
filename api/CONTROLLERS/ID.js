@@ -1,39 +1,11 @@
-const express = require('express');
-const router = express.Router();
+
 const mongoose = require("mongoose");
 const checkAuth = require('../middleware/check-auth')
-const multer = require('multer');
 
 const Identification = require('../models/ID');
 /*this portion is connected to our models folder  in the product file 
 it is used to give the layout of an actual "product" object  in the data base */
 //####################################################################################
-
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-      cb(null, './uploads/');
-    },
-    filename: function(req, file, cb) {
-      cb(null, Date.now() + file.originalname);
-    }
-  });
-
-const fileFilter = (req, file, cb) => {
-    // reject a file
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-      cb(null, true);
-    } else {
-      cb(null, false);
-    }
-  };
-
-const upload = multer({
-    storage: storage, 
-    limits:{
-    fileSize :1024 * 1024 *5
-  },
-  fileFilter :fileFilter
-  });
 
 //GET ALL Present IDs
 exports.GET_ALL_IDs = (req, res, next) => {
@@ -69,8 +41,9 @@ exports.GET_ALL_IDs = (req, res, next) => {
       });
   };
 
-  exports.construct_an_ID = checkAuth, upload.single('IDImage'), (req, res, next) => {
-    console.log(req.file); 
+  exports.construct_an_ID = (req, res, next) => {
+    //console.log("see me?");
+    //console.log(req.file);
     //Creating new instance of our Identification Model from the models folder 
     const id = new Identification({
         _id: new mongoose.Types.ObjectId(),//make new odject is for ths "Identification"
@@ -80,7 +53,7 @@ exports.GET_ALL_IDs = (req, res, next) => {
         //IDImage: req.file.path 
       });
       //res.json({ message: "can you see me ?" });//CHECK POINT 
-      //console.log("go1");
+     // console.log("go1");
       id.save()//store into mongodb data base
         .then(result => {//promise to get back something
           console.log(result);//lock the console
@@ -158,7 +131,7 @@ exports.edit_an_ID = checkAuth, (req, res, next) => {
           error: err
         });
       });
-  }
+  };
 
   exports.delete_an_ID = checkAuth, (req, res, next) => {
     const id = req.params.The_ID;
@@ -180,4 +153,4 @@ exports.edit_an_ID = checkAuth, (req, res, next) => {
           error: err
         });
       });
-  }
+  };

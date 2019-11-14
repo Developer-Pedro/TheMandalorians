@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const multer = require('multer');
-const checkAuth = require('../middleware/check-auth')
+const checkAuth = require('../middleware/check-auth');
 const IDController = require ('../CONTROLLERS/ID');
+
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -32,7 +32,7 @@ fileFilter :fileFilter
 });
 
 
-const Identification = require('../models/ID');
+//const Identification = require('../models/ID');
 /*this portion is connected to our models folder  in the product file 
 it is used to give the layout of an actual "product" object  in the data base */
 //####################################################################################
@@ -44,7 +44,7 @@ router.get("/", IDController.GET_ALL_IDs);
   
 //POST a new identification 
 /*for a post request from this data fname and lname are expected*/
-router.post("/",IDController.construct_an_ID);
+router.post("/", checkAuth, upload.single('IDImage'),IDController.construct_an_ID);
 
 //Get
 // the collon inside the function extracts something specific about the the product in this case the product 
