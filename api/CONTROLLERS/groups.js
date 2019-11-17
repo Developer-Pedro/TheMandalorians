@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const checkAuth = require('../middleware/check-auth')
 
-//importing models from models files
+//importing models from models file
 const Identification = require("../models/ID");
 const Group = require("../models/groups");
 

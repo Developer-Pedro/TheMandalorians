@@ -10,7 +10,7 @@ it is used to give the layout of an actual "product" object  in the data base */
 //GET ALL Present IDs
 exports.GET_ALL_IDs = (req, res, next) => {
     Identification.find()
-      .select("fname lname _id IDImage")
+      .select("fname lname _id IDImage club")
       .exec()
       .then(docs => {
         const response = {
@@ -21,6 +21,7 @@ exports.GET_ALL_IDs = (req, res, next) => {
               _id: doc._id,
               lname: doc.lname,
               fname: doc.fname,
+              club: doc.club,
               IDImage: doc.IDImage,
               request: {
                 type: "GET",
@@ -49,8 +50,9 @@ exports.GET_ALL_IDs = (req, res, next) => {
         _id: new mongoose.Types.ObjectId(),//make new odject is for ths "Identification"
         fname: req.body.fname,//first name 
         lname: req.body.lname,//last name 
-        IDImage: req.file.path
-        //IDImage: req.file.path 
+        club: req.body.club,//key to making an group
+        //email: req.body.email
+        IDImage: req.file.path 
       });
       //res.json({ message: "can you see me ?" });//CHECK POINT 
      // console.log("go1");
@@ -63,6 +65,7 @@ exports.GET_ALL_IDs = (req, res, next) => {
                 lname: result.lname,
                 fname: result.fname,
                 _id: result._id,
+                club: result.club,
                 request: {
                     type: 'GET',
                     url: "http://localhost:3000/ID/" + result._id
@@ -105,7 +108,7 @@ exports.GET_ALL_IDs = (req, res, next) => {
           });
       };
 
-exports.edit_an_ID = checkAuth, (req, res, next) => {
+exports.edit_an_ID =  (req, res, next) => {
     const id = req.params.The_ID;
     const updateOps = {};// allows us to send different types of patch requests 
     for (const ops of req.body) {

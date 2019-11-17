@@ -52,7 +52,7 @@ router.post("/", checkAuth, upload.single('IDImage'),IDController.construct_an_I
 
 //PATCH
 //router to send path request that alter specific things in the object
-  router.patch("/:The_ID",IDController.edit_an_ID);
+  router.patch("/:The_ID",checkAuth,IDController.edit_an_ID);
 
 //Delete ID .....but I think you knew that
   router.delete("/:The_ID", checkAuth,IDController.delete_an_ID);
