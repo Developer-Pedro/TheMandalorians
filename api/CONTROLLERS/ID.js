@@ -39,12 +39,10 @@ exports.GET_ALL_IDs = (req, res, next) => {
         res.status(500).json({
           error: err
         });
-      });
-  };
+  });
+};
 
   exports.construct_an_ID = (req, res, next) => {
-    //console.log("see me?");
-    //console.log(req.file);
     //Creating new instance of our Identification Model from the models folder 
     const id = new Identification({
         _id: new mongoose.Types.ObjectId(),//make new odject is for ths "Identification"
@@ -84,7 +82,7 @@ exports.GET_ALL_IDs = (req, res, next) => {
     exports.get_specific_ID = (req, res, next) => {
         const id = req.params.The_ID;
         Identification.findById(id)
-          .select('fname lname _id personImage')
+          .select('fname lname _id IDImage club')
           .exec()
           .then(doc => {
             console.log("From database", doc);
@@ -109,7 +107,7 @@ exports.GET_ALL_IDs = (req, res, next) => {
       };
 
 exports.edit_an_ID =  (req, res, next) => {
-    const id = req.params.The_ID;
+    const id = req.params.The_ID;//this will target the specific "id" we want to edit 
     const updateOps = {};// allows us to send different types of patch requests 
     for (const ops of req.body) {
       updateOps[ops.propName] = ops.value;

@@ -5,10 +5,12 @@ const checkAuth = require('../middleware/check-auth')
 const Identification = require("../models/ID");
 const Group = require("../models/groups");
 
+
 exports.groups_get_all= (req,res,next)=>{
-    Group.find()
-    .select('person quantity _id id')
-    .populate('person', 'fname')
+    Group
+    .find()
+    .select('person')
+    .populate('person')
     .exec()
     .then(docs=>{
       res.status(200).json({
@@ -19,6 +21,7 @@ exports.groups_get_all= (req,res,next)=>{
            person: doc.person,
            quantity: doc.quantity,
            The_ID: doc.id.fname,
+           
            request: {
             type: "GET",
             url: "http://localhost:3000/groups/" + doc._id
@@ -35,20 +38,41 @@ exports.groups_get_all= (req,res,next)=>{
   };
 
   exports.create_a_group =  (req, res, next) => {
-    Identification.findById(req.body.The_ID)
+    
+    //Check to Find what we want to group by
+    const The_Criteria = {};//get the value we want to group by 
+    //console.log("Check Point 1");
+    
+    //Check to determine that data 
+    for(const detail of req.body){//input of what criteria we are grouping by
+      The_Criteria[detail.WTF] = detail.value;
+    }
+    //console.log("Check Point 2");
+
+    //Check point to find all "id"s with the same value in that field 
+    Identification.aggregate([
+      //Phase 1: finding all that meet the criteria 
+      {$match: {club: The_Criteria}},
+      //Phase 2: group all the matched docs into a new single doc 
+      {$group:{_id:"$club"}}
+    ])
+    //Identification.findById(req.body.The_ID) //commented out on purpose 
       .then(id => {
         if (!id) {
+          console.log("see me?");
           return res.status(404).json({
-            message: "Person not found"
+            message: "People not found"
           });
         }//making new instance of model 
         const group = new Group({
           _id: mongoose.Types.ObjectId(),
           quantity: req.body.quantity,
-          person: req.body.The_ID
+          //person: req.body.The_ID
+          person: req.body.The_ID//The_club
         });
+        //console.log("Check Point 3");
         //save that new created group to the database
-        return group.save();
+      return group.save();
       })
       //return  that result to the user concerning new group
       .then(result => {
@@ -62,7 +86,7 @@ exports.groups_get_all= (req,res,next)=>{
           },
           request: {
             type: "GET",
-            url: "http://localhost:3000/orders/" + result._id
+            url: "http://localhost:3000/groups/" + result._id
           }
         });
       })
