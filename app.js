@@ -5,6 +5,16 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');//data base authorixation
 
+/*
+const {nerdvision} = require('@nerdvision/agent');
+
+nerdvision.init({
+    apiKey: 'd9e0f15678329cae9c3d12f011a9c2b2c0498119a0256005de22488a246be694235e49562053f1500f7d2147f7ce2892c7606e4cee03c4a58c351e8fab77de99',
+    debug: true,
+});
+
+*/ 
+
 //implementation of certain packages 
 // "use" sets up a middle ware
 app.use(morgan("dev"));//logger middle-ware

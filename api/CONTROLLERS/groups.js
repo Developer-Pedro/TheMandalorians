@@ -51,6 +51,7 @@ exports.groups_get_all= (req,res,next)=>{
 
     //Check point to find all "id"s with the same value in that field 
     Identification.aggregate([
+      
       //Phase 1: finding all that meet the criteria 
       {$match: {club: The_Criteria}},
       //Phase 2: group all the matched docs into a new single doc 

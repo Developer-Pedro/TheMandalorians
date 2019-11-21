@@ -9,6 +9,8 @@ it is used to give the layout of an actual "product" object  in the data base */
 
 //GET ALL Present IDs
 exports.GET_ALL_IDs = (req, res, next) => {
+  //debugger;
+  //console.log("XXXX");
     Identification.find()
       .select("fname lname _id IDImage club")
       .exec()
