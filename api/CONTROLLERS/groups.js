@@ -68,8 +68,28 @@ exports.groups_get_all= (req,res,next)=>{
         const group = new Group({
           _id: mongoose.Types.ObjectId(),
           quantity: req.body.quantity,
-          //person: req.body.The_ID
-          person: req.body.The_ID//The_club
+          person: req.body.The_ID,//The_club
+          message1: req.body.message1,
+          message2: req.body.message2,
+          message3: req.body.message3,
+          message4: req.body.message4,
+          message5: req.body.message5,
+          message6: req.body.message6,
+          message7: req.body.message7,
+          message8: req.body.message8,
+          message9: req.body.message9,
+          message10: req.body.message10,
+          message11: req.body.message11,
+          message12: req.body.message12,
+          message13: req.body.message13,
+          message14: req.body.message14,
+          message15: req.body.message15,
+          message16: req.body.message16,
+          message17: req.body.message17,
+          message18: req.body.message18,
+          message19: req.body.message19,
+          message20: req.body.message20,
+
         });
         //console.log("Check Point 3");
         //save that new created group to the database
