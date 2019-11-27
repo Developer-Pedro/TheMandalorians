@@ -19,7 +19,6 @@ exports.GET_ALL_IDs = (req, res, next) => {
           count: docs.length,
           ids: docs.map(doc => {
             return {
-              //IDImage: doc.IDImage,
               _id: doc._id,
               lname: doc.lname,
               fname: doc.fname,

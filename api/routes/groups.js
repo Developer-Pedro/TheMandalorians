@@ -14,6 +14,9 @@ router.get("/", GroupsController.groups_get_all);
 //Create a group
 router.post("/",GroupsController.create_a_group);
 
+//Add message to the group
+router.patch("/:The_Group",GroupsController.Add_Message);
+
 //Find a specific group
 router.get("/:The_Group",GroupsController.get_specific_group);
 
