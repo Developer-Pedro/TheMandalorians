@@ -38,11 +38,18 @@ exports.groups_get_all= (req,res,next)=>{
     });
   };
 
+  
 
 
   exports.Add_Message =(req, res, next)=>{
-    const id = req.params.The_Group;// target specific group
-    Group.update({_id:id},
+    // load targeted group into for future use
+    const id = req.params.The_Group;
+
+    //clarify the type action your about to take
+    Group.update(
+      {_id:id},//load targeted group 
+
+      //push new string into desired array
     {$push: {messages:req.body.newMessage}})
     .then(result=>{
       res.status(200).json({
@@ -55,6 +62,33 @@ exports.groups_get_all= (req,res,next)=>{
     })
   }
 
+  //  PURPOSE:ADD SOMEONE TO GROUP
+  exports.Add_Member=(req, res, next)=>{
+    // line "63" ->target specific group(This will be passed in the header) load it into 'id'
+    //EXAMPLE:: http://localhost:3000/groups/5dddf913f92dcd78e4b85e1d <--last line is the Identification
+    const id = req.params.The_Group;
+
+    const the_one = req.body.the_one;
+
+    //line "66" locate the Identification that already should be created and store it into 
+  Identification.findById(the_one);
+
+    // line "69" identify the type of operation being committed "its an update"
+    Group.updateOne(
+      {_id:id},//load target again for committed operation
+      {$push: {person:the_one}}//insert the identification
+      )
+    .then(result=>{
+      res.status(200).json({
+        message: "Member Added",
+        request: {
+          type: 'GET',
+          url: 'http://localhost:3000/groups/' + id,
+        }
+      })
+    })
+  }
+  
   exports.create_a_group =  (req, res, next) => {
     
     //Check to Find what we want to group by

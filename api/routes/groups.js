@@ -15,7 +15,10 @@ router.get("/", GroupsController.groups_get_all);
 router.post("/",GroupsController.create_a_group);
 
 //Add message to the group
-router.patch("/:The_Group",GroupsController.Add_Message);
+router.put("/:The_Group",GroupsController.Add_Message);
+
+//Add member to the group
+router.patch("/:The_Group",GroupsController.Add_Member);
 
 //Find a specific group
 router.get("/:The_Group",GroupsController.get_specific_group);

@@ -113,8 +113,7 @@ exports.edit_an_ID =  (req, res, next) => {
     for (const ops of req.body) {
       updateOps[ops.propName] = ops.value;
     }
-   Identification.update({ _id: id },
-     { $set: updateOps })
+   Identification.update({ _id: id },{ $set: updateOps })
       .exec()
       .then(result => {
         res.status(200).json({
