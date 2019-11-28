@@ -64,16 +64,17 @@ exports.groups_get_all= (req,res,next)=>{
 
   //  PURPOSE:ADD SOMEONE TO GROUP
   exports.Add_Member=(req, res, next)=>{
-    // line "63" ->target specific group(This will be passed in the header) load it into 'id'
+    // line "69" ->target specific group(This will be passed in the header) load it into 'id'
     //EXAMPLE:: http://localhost:3000/groups/5dddf913f92dcd78e4b85e1d <--last line is the Identification
     const id = req.params.The_Group;
 
+    //line "72" -->inject targeted specific "Identifification" into the_one
     const the_one = req.body.the_one;
 
-    //line "66" locate the Identification that already should be created and store it into 
+    //line "75" locate the Identification that already should be created and store it into 
   Identification.findById(the_one);
 
-    // line "69" identify the type of operation being committed "its an update"
+    // line "78" identify the type of operation being committed "its an update"
     Group.updateOne(
       {_id:id},//load target again for committed operation
       {$push: {person:the_one}}//insert the identification
