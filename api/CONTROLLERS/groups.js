@@ -94,13 +94,11 @@ exports.groups_get_all= (req,res,next)=>{
     
     //Check to Find what we want to group by
     const The_Criteria = {};//get the value we want to group by 
-    //console.log("Check Point 1");
     
-    //Check to determine that data 
+    //Check to determine that data  exists
     for(const detail of req.body){//input of what criteria we are grouping by
       The_Criteria[detail.WTF] = detail.value;
     }
-    //console.log("Check Point 2");
 
     //Check point to find all "id"s with the same value in that field 
     Identification.aggregate([
@@ -110,7 +108,7 @@ exports.groups_get_all= (req,res,next)=>{
       //Phase 2: group all the matched docs into a new single doc 
       {$group:{_id:"$club"}}
     ])
-    //Identification.findById(req.body.The_ID) //commented out on purpose 
+   
       .then(id => {
         if (!id) {
           console.log("see me?");
