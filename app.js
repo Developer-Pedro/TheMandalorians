@@ -35,7 +35,7 @@ app.use("/user", userRoutes);
 //loging to the actual server
 mongoose.connect(
     'mongodb+srv://guzma087:'
-    + process.env.MONGO_ATLAS_PW +
+    + "tjtt$$9bmgmH" +
     '@box-1-yfkc7.azure.mongodb.net/test?retryWrites=true&w=majority',
 {
     useNewUrlParser:true,
