@@ -1,5 +1,5 @@
 {
-  "name": "basic_restful_api",
+  "name": "sheath",
   "version": "1.0.0",
   "description": "API for school software engineering project ",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "start": "nodemon server.js"
   },
   "author": "Pedro Lebron Guzman III debugged by Dylan with supervision from Ninevah",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@nerdvision/agent": "^0.2.1",
     "bcrypt": "^3.0.7",
@@ -31,5 +31,17 @@
   },
   "engines": {
     "node": "^8.9.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Developer-Pedro/TheMandalorians.git"
+  },
+  "keywords": [
+    "example",
+    "heroku"
+  ],
+  "bugs": {
+    "url": "https://github.com/Developer-Pedro/TheMandalorians/issues"
+  },
+  "homepage": "https://github.com/Developer-Pedro/TheMandalorians#readme"
 }
